@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
+import { apiCall } from './api';
 import ToastContainer from './components/ToastContainer';
 import Navbar from './components/Navbar';
 import FormContainer from './components/FormContainer';
@@ -21,8 +21,8 @@ const App = () => {
   useEffect(() => {
     const fetchPasswords = async () => {
       try {
-        const response = await axios.get('/api/passwords');
-        setPasswords(response.data);
+        const data = await apiCall('/passwords');
+        setPasswords(data);
       } catch (error) {
         showToast('Error loading passwords: ' + error.message);
         console.error(error);
@@ -33,7 +33,7 @@ const App = () => {
 
   const deletePassword = async (_id) => {
     try {
-      await axios.delete(`/api/passwords/${_id}`);
+      await apiCall(`/passwords/${_id}`, { method: 'DELETE' });
 
       setPasswords(passwords.filter(p => p._id !== _id));
       showToast('Password deleted', 'info');
