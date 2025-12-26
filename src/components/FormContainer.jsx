@@ -1,5 +1,5 @@
-import axios from "axios";
 import { useState } from "react";
+import { apiCall } from "../api";
 
 const FormContainer = ({ darkMode, showToast, passwords, setPasswords }) => {
     // const [passwords, setPasswords] = useState([]);
@@ -26,9 +26,13 @@ const FormContainer = ({ darkMode, showToast, passwords, setPasswords }) => {
         }
 
         try {
-            const response = await axios.post('/api/passwords', formData);
+            const response = await apiCall('/passwords', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formData)
+            });
 
-            setPasswords([...passwords, response.data]);
+            setPasswords([...passwords, response]);
             setFormData({ site: '', username: '', password: '' });
             showToast('Password saved successfully!', 'success');
         } catch (error) {

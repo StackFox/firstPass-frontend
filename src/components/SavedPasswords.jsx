@@ -1,7 +1,7 @@
 import { useState } from "react"
-import axios from "axios"
+import { apiCall } from "../api"
 
-const SavedPasswords = ({ darkMode, passwords, deletePassword, showPasswords, setShowPasswords,setPasswords, showToast }) => {
+const SavedPasswords = ({ darkMode, passwords, deletePassword, showPasswords, setShowPasswords, setPasswords, showToast }) => {
     const [editingId, setEditingId] = useState(null);
     const [editForm, setEditForm] = useState({
         site: "",
@@ -44,11 +44,15 @@ const SavedPasswords = ({ darkMode, passwords, deletePassword, showPasswords, se
 
     const handleSaveEdit = async (_id) => {
         try {
-            const response = await axios.put(`/api/passwords/${_id}`, editForm);
+            const response = await apiCall(`/passwords/${_id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(editForm)
+            });
 
             // update local state
             setPasswords((prev) =>
-                prev.map((p) => (p._id === _id ? response.data : p))
+                prev.map((p) => (p._id === _id ? response : p))
             );
             showToast("Password Editted!")
             setEditingId(null);

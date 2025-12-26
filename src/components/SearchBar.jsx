@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import axios from 'axios'
 import SearchResult from './SearchResult'
 
 // showDesktop / showMobile control where the search renders. Default keeps previous behavior.

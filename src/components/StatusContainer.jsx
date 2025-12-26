@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import { apiCall } from "../api";
 
 const StatusContainer = ({ darkMode, showToast }) => {
     const [status, setStatus] = useState(null);
     useEffect(() => {
         const fetchStatus = async () => {
             try {
-                const response = await axios.get("/api/status");
-                setStatus(response.data);
+                const response = await apiCall("/status");
+                setStatus(response);
             } catch (error) {
                 showToast('Error loading status: ' + error.message);
                 console.error(error);
